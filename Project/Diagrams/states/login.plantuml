@@ -1,0 +1,70 @@
+@startuml Login
+
+hide empty description
+
+[*] --> LoginInit
+
+state "Redirect To Home Page For Guest" as GuestHome
+state "Home Page Showing" as Home
+state "Login Page Showing" as LoginInit
+state "Login Success" as LoginSuccess
+state "Login Failed" as LoginFailed
+state LoginButtonChoice <<choice>>
+
+LoginInit --> LoginButtonChoice
+
+LoginButtonChoice --> Register : [Click on Register]
+LoginButtonChoice --> ForgotPassword : [Click on Forgot Password]
+LoginButtonChoice --> GuestHome : [Click on Home]
+
+LoginInit --> LoginSuccess : Enter credentials [Correct]
+LoginSuccess --> Home
+Home --> [*]
+
+LoginInit --> LoginFailed : Enter credentials [Incorrect]
+LoginFailed --> LoginInit : Retry
+
+GuestHome --> [*]
+
+state Register {
+    state "Register Page Showing" as RegisterPage
+    state "Have an account?" as RegisterHaveAccount
+    state "Register Success" as RegisterSuccess
+    state "Register Failed" as RegisterFailed
+
+    [*] --> RegisterPage
+    RegisterPage --> RegisterHaveAccount <<exitpoint>>
+
+    RegisterPage --> RegisterFailed : Enter infos [Invalid]
+    RegisterFailed --> RegisterPage : Retry
+
+    RegisterPage --> RegisterSuccess <<exitpoint>>: Enter infos [Valid]
+}
+RegisterHaveAccount --> LoginInit : Clicked
+RegisterSuccess --> LoginInit
+
+state ForgotPassword {
+  state "Forgot Password Page Showing" as ForgotPasswordPage
+  state "Back to Login?" as BackToLogin
+  state "Change Password Page Showing" as ChangePassword
+  state "Email Sent" as EmailSent
+  state "Changed Password" as ChangedPassword
+  state "Change Password Failed" as ChangePasswordFailed
+
+  [*] --> ForgotPasswordPage
+  ForgotPasswordPage --> BackToLogin <<exitpoint>>
+
+  ForgotPasswordPage --> EmailSent : Enter username [Valid]
+  EmailSent -->ChangePassword : Click on link in email
+  EmailSent --> EmailSent : Click on resend email
+
+  ChangePassword --> ChangePasswordFailed : Enter new password [Invalid]
+  ChangePasswordFailed --> ChangePassword : Retry
+
+  ChangePassword --> ChangedPassword <<exitpoint>> : Enter new password [Valid]
+}
+
+BackToLogin --> LoginInit : Clicked
+ChangedPassword --> LoginInit
+
+@enduml

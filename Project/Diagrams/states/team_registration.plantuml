@@ -1,0 +1,27 @@
+@startuml Team Registration
+
+hide empty description
+
+state "Have enough space for register team" as Init
+state "Creating Team" as Creating
+state "Waiting Approval From Organization Committee" as Waiting
+state "Registration Successful" as Successful
+state "Registration Failed" as Failed
+
+
+
+
+[*] --> Init
+
+Init --> Creating : [Enough space]
+Creating --> Waiting : [Enough information]
+Creating --> Creating : [Leaked information]
+
+Waiting --> Failed : [Rejected]
+Failed --> [*]
+
+Waiting --> Successful : [Approved]
+
+Successful --> [*]
+
+@enduml

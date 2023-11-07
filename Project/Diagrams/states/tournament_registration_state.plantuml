@@ -1,0 +1,33 @@
+@startuml Tournament Registration
+
+hide empty description
+
+state "Can Create Tournaments" as Init
+state "Creating Tournament" as Creating
+state "Waiting Approval" as Waiting
+state "Posting Tournament To Website" as Posting
+state "Waiting Team Registration" as WaitingTeams
+state "Tournament Canceled" as Cancelled
+state "Successful Tournament" as Successful
+
+[*] --> Init
+
+Init --> Creating : Create Tournament
+Creating --> Waiting : [Added laws and necessary information]
+Creating --> Creating : [Leaked information]
+
+Waiting --> [*] : [Rejected]
+
+Waiting --> Posting : [Approved]
+
+Posting --> WaitingTeams : [Posted]
+
+WaitingTeams --> Cancelled : [Not enough teams]
+
+Cancelled --> [*] : [Tournament canceled]
+
+WaitingTeams --> Successful : [Enough teams]
+
+Successful --> [*] : [Tournament finished]
+
+@enduml
