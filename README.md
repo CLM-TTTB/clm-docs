@@ -1,4 +1,4 @@
-## Document for Foodey Project
+## Document for CLM Project
 
 🔥 [Policy](./Policies/README.md)
 
